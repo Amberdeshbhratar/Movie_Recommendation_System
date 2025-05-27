@@ -1,0 +1,35 @@
+@import "tailwindcss";
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+.animate-fade-in {
+  animation: fade-in 0.3s ease;
+}
+/* Custom vertical scrollbar for chat area with #a31bc2 */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #a31bc2 #f3e8fb; /* thumb color, track color */
+}
+
+/* Chrome, Edge, Safari */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #a31bc2;
+  border-radius: 8px;
+  border: 2px solid #f3e8fb;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #8611a8;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f3e8fb;
+  border-radius: 8px;
+}
+
+
