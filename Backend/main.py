@@ -57,7 +57,7 @@ memory = ConversationBufferMemory(
 
 # LLM setup
 llm = ChatGoogleGenerativeAI(
-    google_api_key="AIzaSyCpg4ohn2ORebEQY_p7Fvwz1PB4yppxE5k",
+    google_api_key="Your_Api_Key",
     model="gemini-2.0-flash"
 )
 
