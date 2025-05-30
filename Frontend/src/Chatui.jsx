@@ -35,20 +35,28 @@ function Chatui() {
       const botMessage = {
         sender: 'bot',
         text: response.data.answer || "Sorry, I didn't understand that.",
-        time: new Date().toLocaleTimeString()
+        time: new Date().toLocaleTimeString(),
+        movies: response.data.movie_list || []
       };
 
       setMessages(prev => [...prev, botMessage]);
+      console.log(response)
     } catch (error) {
       console.error(error);
       setMessages(prev => [
         ...prev,
-        { sender: 'bot', text: 'Error! Try again.', time: new Date().toLocaleTimeString() }
+        {
+          sender: 'bot',
+          text: 'Error! Try again.',
+          time: new Date().toLocaleTimeString(),
+          movies: []
+        }
       ]);
     }
 
     setLoading(false);
   };
+
 
   useEffect(() => {
     chatRef.current?.scrollTo({ top: chatRef.current.scrollHeight, behavior: 'smooth' });
@@ -59,11 +67,11 @@ function Chatui() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-[#a31bc2] via-[#e0b3ef] to-[#f3e8fb] p-4">
+    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-[#270038] via-[#ffffff] to-[#140023] p-4">
       <div className="flex flex-col w-full max-w-8xl h-[95vh] bg-white/90 rounded-2xl shadow-2xl border border-[#a31bc2]/30 overflow-hidden">
         {/* Header */}
         <header className="flex-shrink-0 w-full p-4 bg-gradient-to-r from-[#a31bc2] to-[#e0b3ef] text-xl font-bold text-center text-white shadow-md border-b border-[#a31bc2]/20">
-          🎬 Movie Chat Assistant
+          🎬 Movie Chat Assistant 🍿
         </header>
 
         {/* Chat scrollable area */}
@@ -72,31 +80,51 @@ function Chatui() {
           className="flex-1 overflow-y-auto px-2 sm:px-8 py-4 space-y-6 custom-scrollbar bg-transparent"
         >
           {messages.map((msg, idx) => (
-            <div
-              key={idx}
-              className={`flex flex-col transition-all duration-300 ${
-                msg.sender === 'user' ? 'items-end' : 'items-start'
-              }`}
-            >
+            <div key={idx} className={`flex flex-col transition-all duration-300 ${msg.sender === 'user' ? 'items-end' : 'items-start'}`}>
               <div className={`flex items-end ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                 {msg.sender === 'bot' && <Bot className="w-5 h-5 mr-2 text-[#a31bc2]" />}
-                <div
-                  className={`relative max-w-[80vw] sm:max-w-lg px-4 py-3 rounded-2xl text-sm shadow-lg animate-fade-in
-                    ${msg.sender === 'user'
-                      ? 'bg-gradient-to-br from-[#a31bc2] to-[#e0b3ef] text-white rounded-br-none'
-                      : 'bg-gradient-to-br from-white to-[#f3e8fb] border border-[#a31bc2]/20 text-[#5c217e] rounded-bl-none'
-                    }`}
-                >
+                <div className={`relative max-w-[80vw] sm:max-w-lg px-4 py-3 rounded-2xl text-sm shadow-lg animate-fade-in
+        ${msg.sender === 'user'
+                    ? 'bg-gradient-to-br from-[#a31bc2] to-[#e0b3ef] text-white rounded-br-none'
+                    : 'bg-gradient-to-br from-white to-[#f3e8fb] border border-[#a31bc2]/20 text-[#5c217e] rounded-bl-none'}`}>
                   <p className="break-words">{msg.text}</p>
                 </div>
                 {msg.sender === 'user' && <User className="w-5 h-5 ml-2 text-[#a31bc2]" />}
               </div>
-              {/* Time outside chat bubble */}
+
+              {/* Time */}
               <span className={`text-[10px] mt-1 opacity-70 ${msg.sender === 'user' ? 'text-right' : 'text-left'} max-w-[80vw] sm:max-w-lg text-[#a31bc2]`}>
                 {msg.time}
               </span>
+
+              {/* Movie cards for bot messages */}
+              {msg.movies && msg.movies.length > 0 && (
+                <div className="mt-2 pl-7">
+                  <div className="flex overflow-x-auto gap-4 pr-4 pb-2 custom-scrollbar">
+                    {msg.movies.map((movie, mIndex) => (
+                      <div
+                        key={mIndex}
+                        className="min-w-[160px] max-w-[160px] bg-white rounded-lg shadow-md border border-[#a31bc2]/20 overflow-hidden hover:shadow-lg transition-transform hover:scale-105"
+                      >
+                        <img
+                          src={movie.url}
+                          alt={movie.title}
+                          className="w-full h-[220px] object-cover"
+                        />
+                        <div className="p-2">
+                          <h3 className="text-[13px] font-semibold text-[#5c217e]">{movie.title}</h3>
+                          <p className="text-[11px] text-gray-700 line-clamp-3">{movie.description}</p>
+                          <p className="text-[10px] text-[#a31bc2] mt-1 font-medium">⭐ {movie.rating}/10</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           ))}
+
+
           {loading && (
             <div className="text-sm text-[#a31bc2] animate-pulse" aria-live="polite">
               Bot is typing...
