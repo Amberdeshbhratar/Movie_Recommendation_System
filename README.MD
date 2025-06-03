@@ -15,6 +15,7 @@ A conversational AI-powered movie recommender that helps users discover movies b
 ## Demo
 
 <!-- Replace with actual screenshot path -->
+🎥 [Watch Demo Video](https://drive.google.com/file/d/1hB1XJ4NvJkT4q0ymIc2c8TI9XrxUUwx8/view?usp=sharing)
 
 ## Project Structure
 
